@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LineTrackingView">
+        <attr name="lineColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="TrackFlowView">
+        <attr name="textColor" format="color" />
+        <attr name="rectColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="aspect_width" format="float" />
+        <attr name="aspect_height" format="float"/>
+        <attr name="aspectMode" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="custom" value="1"/>
+            <enum name="square" value="2"/>
+            <enum name="cinema" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>

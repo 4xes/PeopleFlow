@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PeopleFlow</string>
+    <string name="permission">Permission is denied</string>
+    <string name="take_a_photo">Shot</string>
+    <string name="title_flow">People flow</string>
+</resources>
