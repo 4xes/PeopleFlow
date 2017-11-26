@@ -38,6 +38,12 @@ class LinesAdapter: RecyclerView.Adapter<LinesAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        val line = models!![position]
+
+        holder.id.text = line.id.toString()
+        holder.input.text = line.counter.inFlow.toString()
+        holder.ouput.text = line.counter.outFlow.toString()
+
         holder.btnRemove.setOnClickListener {
             listener?.invoke(position)
         }

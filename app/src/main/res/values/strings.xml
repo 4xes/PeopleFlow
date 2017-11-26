@@ -6,7 +6,7 @@
     <string name="title_flow">@string/app_name</string>
 
     <string name="list_of_lines">List of lines</string>
-    <string name="label_ID">ID</string>
+    <string name="label_id">ID</string>
     <string name="label_in">In</string>
     <string name="label_out">Out</string>
 </resources>
