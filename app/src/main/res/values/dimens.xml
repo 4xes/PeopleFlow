@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="normal">16dp</dimen>
+    <dimen name="normal_tools">10dp</dimen>
+    <dimen name="normal_seekBar">20dp</dimen>
+    <dimen name="large">40dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="small">8dp</dimen>
+    <dimen name="tiny">4dp</dimen>
+
+    <dimen name="side">6dp</dimen>
+    <dimen name="side_shape">-4dp</dimen>
+    <dimen name="sound_padding">60dp</dimen>
+</resources>

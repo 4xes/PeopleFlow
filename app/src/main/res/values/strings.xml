@@ -4,4 +4,9 @@
     <string name="take_a_photo">Shot</string>
     <string name="waiting_connection">Waiting for connection…</string>
     <string name="title_flow">@string/app_name</string>
+
+    <string name="list_of_lines">List of lines</string>
+    <string name="label_ID">ID</string>
+    <string name="label_in">In</string>
+    <string name="label_out">Out</string>
 </resources>
