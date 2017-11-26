@@ -27,4 +27,5 @@ data class Data(val frame_path: String?, val bbox: List<Bbox>?, val line: List<L
             override fun newArray(size: Int): Array<Data?> = arrayOfNulls(size)
         }
     }
+
 }

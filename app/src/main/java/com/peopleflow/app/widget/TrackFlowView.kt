@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -28,6 +29,7 @@ class TrackFlowView @JvmOverloads constructor(
     private var textSize: Float = 0f
     private var lineWidth: Float = 1f
     private var poolRect: List<Rect> = emptyList()
+    private lateinit var colors: List<Int>
 
     var data: Data? = null
         set(value) {
@@ -76,10 +78,15 @@ class TrackFlowView @JvmOverloads constructor(
                     Log.d(TAG, rect.toString())
                 }
 
+                rectPaint.color = getColor(bbox.id.hashCode())
                 canvas.drawRect(rect, rectPaint)
             }
         }
 
+    }
+
+    fun getColor(hash: Int): Int {
+        return colors[Math.min(hash.rem(colors.size), colors.size -1)]
     }
 
     private fun initPool() {
@@ -114,6 +121,10 @@ class TrackFlowView @JvmOverloads constructor(
         rectPaint.style = Paint.Style.STROKE
         rectPaint.color = rectColor
         rectPaint.strokeWidth = lineWidth
+
+        colors = COLORS.map {
+            ContextCompat.getColor(context, it)
+        }
     }
 
     private fun initDimensions(context: Context) {
@@ -170,6 +181,12 @@ class TrackFlowView @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    companion object {
+        val COLORS = arrayOf(
+                R.color.rect_c1, R.color.rect_c2, R.color.rect_c3, R.color.rect_c4,
+                R.color.rect_c5, R.color.rect_c6, R.color.rect_c7, R.color.rect_c8)
     }
 }
 
