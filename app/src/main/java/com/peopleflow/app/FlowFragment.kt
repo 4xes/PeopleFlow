@@ -14,9 +14,7 @@ import com.squareup.picasso.Target
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_flow.*
-import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.zip.GZIPOutputStream
 import javax.inject.Inject
 
 
@@ -45,6 +43,20 @@ class FlowFragment: BaseFragment() {
         data = savedInstanceState?.getParcelable("data")
         if (data != null) {
             setResult(data!!)
+        }
+        lines.setListener {
+            subscribe(repository.removeLine(it).subscribe({
+
+            }, {
+                it.printStackTrace()
+            }))
+        }
+        line.listener = {
+            subscribe(repository.addLine(it.left, it.top, it.right, it.bottom).subscribe({
+
+            }, {
+                it.printStackTrace()
+            }))
         }
     }
 

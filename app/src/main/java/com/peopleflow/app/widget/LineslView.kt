@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.peopleflow.app.entities.Data
-import kotlinx.android.synthetic.main.fragment_flow.view.*
-
 
 open class LineslView @JvmOverloads constructor(
         context: Context,
@@ -25,7 +23,6 @@ open class LineslView @JvmOverloads constructor(
     fun setData(data: Data) {
         linesAdapter.models = data.line
     }
-
 
     init {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

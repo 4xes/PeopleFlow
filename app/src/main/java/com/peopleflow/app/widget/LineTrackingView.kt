@@ -25,6 +25,8 @@ class LineTrackingView @JvmOverloads constructor(
 
     private var lines: List<Line> = emptyList()
 
+    var listener: ((RectF) -> Unit)? = null
+
     init {
         initAttributes(context, attrs, defStyleAttr, 0)
         initDimensions(context)
@@ -74,6 +76,7 @@ class LineTrackingView @JvmOverloads constructor(
 
         } else if (event.action == MotionEvent.ACTION_UP) {
             if (line != null) {
+                listener?.invoke(line!!)
                 line = null
             }
         } else {
@@ -95,6 +98,10 @@ class LineTrackingView @JvmOverloads constructor(
         if (line != null) {
             canvas.drawLine(line!!.left, line!!.top, line!!.right, line!!.bottom, linePaint)
         }
+    }
+
+    fun setAddListener(listener: (RectF) -> Unit) {
+        this.listener = listener
     }
 
     private fun initPaints() {
