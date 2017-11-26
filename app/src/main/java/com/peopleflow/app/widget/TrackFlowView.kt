@@ -12,7 +12,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import com.peopleflow.app.R
+import com.peopleflow.app.entities.Bbox
 import com.peopleflow.app.entities.Data
+import com.peopleflow.app.entities.Point
 import mmd.kit.ui.extension.pxFromDp
 import mmd.kit.ui.extension.pxFromSp
 
@@ -30,6 +32,7 @@ class TrackFlowView @JvmOverloads constructor(
     private var lineWidth: Float = 1f
     private var poolRect: List<Rect> = emptyList()
     private lateinit var colors: List<Int>
+    private var bound: Rect ?= Rect()
 
     var data: Data? = null
         set(value) {
@@ -44,7 +47,11 @@ class TrackFlowView @JvmOverloads constructor(
                     poolRect = poolRect.plus(difList.toList())
                 }
                 invalidate()
+            } else {
+                val randBB = Bbox(122, Point(0.33f, 0.13f), Point(0.4f, 0.4f))
+                field = Data(null, listOf(randBB), null, null)
             }
+            //null, listOf(Bbox(122, Point(0.33f, 0.33f), Point(0.4f, 04f)), null, null)
         }
 
     init {
@@ -77,9 +84,14 @@ class TrackFlowView @JvmOverloads constructor(
                 } else {
                     Log.d(TAG, rect.toString())
                 }
+                val color = getColor(bbox.id.hashCode())
+                rectPaint.color = color
+                textPaint.color = color
 
-                rectPaint.color = getColor(bbox.id.hashCode())
                 canvas.drawRect(rect, rectPaint)
+                val id = bbox.id.toString()
+                textPaint.getTextBounds(id, 0, id.length, bound)
+                canvas.drawText(bbox.id.toString(), rect.left.toFloat(), rect.top.toFloat() - (bound!!.height() /2), textPaint)
             }
         }
 
@@ -114,7 +126,7 @@ class TrackFlowView @JvmOverloads constructor(
         textPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)
         textPaint.style = Paint.Style.FILL
         textPaint.color = textColor
-        textPaint.textAlign = Paint.Align.CENTER
+        textPaint.textAlign = Paint.Align.LEFT
         textPaint.textSize = textSize
 
         rectPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)

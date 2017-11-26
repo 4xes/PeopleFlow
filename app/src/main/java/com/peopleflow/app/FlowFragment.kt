@@ -54,6 +54,7 @@ class FlowFragment: BaseFragment() {
     }
 
     fun start() {
+        flow?.data = null
         disposable = repository.update().subscribe({
             setResult(it)
         }, {
