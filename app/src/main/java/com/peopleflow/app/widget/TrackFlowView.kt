@@ -47,11 +47,7 @@ class TrackFlowView @JvmOverloads constructor(
                     poolRect = poolRect.plus(difList.toList())
                 }
                 invalidate()
-            } else {
-                val randBB = Bbox(122, Point(0.33f, 0.13f), Point(0.4f, 0.4f))
-                field = Data(null, listOf(randBB), null, null)
             }
-            //null, listOf(Bbox(122, Point(0.33f, 0.33f), Point(0.4f, 04f)), null, null)
         }
 
     init {

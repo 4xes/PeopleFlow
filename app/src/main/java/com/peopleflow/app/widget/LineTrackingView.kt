@@ -1,15 +1,16 @@
 package com.peopleflow.app.widget
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import com.peopleflow.app.R
 import mmd.kit.ui.extension.pxFromDp
+import android.view.MotionEvent
+import com.peopleflow.app.entities.Line
+
 
 class LineTrackingView @JvmOverloads constructor(
         context: Context,
@@ -20,7 +21,9 @@ class LineTrackingView @JvmOverloads constructor(
     private lateinit var linePaint: Paint
     private var lineColor: Int = Color.RED
     private var lineWidth: Float = 1f
-    private var line = Rect()
+    private var line: RectF? = RectF()
+
+    private var lines: List<RectF> = emptyList()
 
     init {
         initAttributes(context, attrs, defStyleAttr, 0)
@@ -40,14 +43,70 @@ class LineTrackingView @JvmOverloads constructor(
         }
     }
 
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (line == null) {
+            line = RectF()
+        }
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                if (line != null) {
+                    line!!.left = event.x - left
+                    line!!.right = line!!.left
+                    line!!.top= event.y - top
+                    line!!.bottom = line!!.top
+                }
+            }
+            MotionEvent.ACTION_DOWN -> {
+                line!!.left = event.x - left
+                line!!.right = line!!.left
+                line!!.top= event.y - top
+                line!!.bottom = line!!.top
+            }
+        }
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            if (line != null) {
+                line!!.left = event.x - left
+                line!!.right = line!!.left
+                line!!.top= event.y - top
+                line!!.bottom = line!!.top
+            }
+
+        } else if (event.action == MotionEvent.ACTION_UP) {
+            if (line != null) {
+                lines = lines.plus(line!!)
+                line = null
+            }
+        } else {
+            line?.left = event.x - left
+            line?.top = event.y - top
+        }
+        invalidate()
+        return true
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+
+
+        lines.forEach {
+            canvas.drawLine(it.left, it.top, it.right, it.bottom, linePaint)
+        }
+
+        if (line != null) {
+            canvas.drawLine(line!!.left, line!!.top, line!!.right, line!!.bottom, linePaint)
+        }
+    }
+
     private fun initPaints() {
         linePaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)
         linePaint.style = Paint.Style.FILL
         linePaint.color = lineColor
+        linePaint.strokeWidth = lineWidth
     }
 
     private fun initDimensions(context: Context) {
-        lineWidth = context.resources.pxFromDp(5)
+        lineWidth = context.resources.pxFromDp(4)
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -69,8 +128,8 @@ class LineTrackingView @JvmOverloads constructor(
 
 
     class SavedState : View.BaseSavedState {
-        var line = Rect()
-
+        var line: RectF? = null
+        var lines: List<RectF>? = null
 
         constructor(superState: Parcelable) : super(superState)
 
@@ -80,7 +139,7 @@ class LineTrackingView @JvmOverloads constructor(
         }
 
         private constructor(`in`: Parcel) : super(`in`) {
-            line = `in`.readParcelable<Rect>(Rect::class.java.classLoader)
+            line = `in`.readParcelable(RectF::class.java.classLoader)
         }
 
         companion object {
