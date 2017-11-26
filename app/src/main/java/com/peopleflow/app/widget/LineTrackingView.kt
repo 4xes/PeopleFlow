@@ -12,6 +12,7 @@ import android.view.View
 import com.peopleflow.app.R
 import mmd.kit.ui.extension.pxFromDp
 import android.view.MotionEvent
+import com.peopleflow.app.entities.Data
 import com.peopleflow.app.entities.Line
 
 
@@ -23,19 +24,19 @@ class LineTrackingView @JvmOverloads constructor(
 
     private lateinit var linePaint: Paint
     private lateinit var linePaint2: Paint
+    private lateinit var linePaint3: Paint
     private var lineColor: Int = Color.RED
     private var lineColor2: Int = Color.BLUE
+    private var lineColor3: Int = Color.YELLOW
     private var lineWidth: Float = 1f
     private var lineWidth2: Float = 1f
+    private var lineWidth3: Float = 1f
     private var line: RectF? = RectF()
-
-    var lines: List<Line>? = emptyList()
+    var data: Data? = null
         set(value) {
             field = value
             invalidate()
         }
-
-
     var listener: ((RectF) -> Unit)? = null
 
     init {
@@ -106,9 +107,29 @@ class LineTrackingView @JvmOverloads constructor(
         super.onDraw(canvas)
 
 
-        lines?.forEach {
+        data?.lines?.forEach {
             canvas.drawLine(it.point1.x * width, it.point1.y * height, it.point2.x * width, it.point2.y * height, linePaint2)
         }
+//
+//        if (data != null && data!!.bbox != null) {
+//            data.
+//            canvas.drawPoints(data?.path!!, linePaint3)
+//        }
+        data?.bbox?.forEach {
+
+            it.path?.apply {
+                for (i in 0 until  this.size) {
+                    if (i.rem(2) == 0 && this[i] <= 1) {
+                        this[i] = this[i] * width
+                    } else {
+                        this[i] = this[i] * height
+                    }
+                }
+                canvas.drawLines(this, linePaint3)
+            }
+
+        }
+
 
         if (line != null) {
             canvas.drawLine(line!!.left, line!!.top, line!!.right, line!!.bottom, linePaint)
@@ -125,11 +146,17 @@ class LineTrackingView @JvmOverloads constructor(
         linePaint2.style = Paint.Style.FILL
         linePaint2.color = lineColor2
         linePaint2.strokeWidth = lineWidth2
+
+        linePaint3 = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)
+        linePaint3.style = Paint.Style.FILL
+        linePaint3.color = lineColor3
+        linePaint3.strokeWidth = lineWidth3
     }
 
     private fun initDimensions(context: Context) {
         lineWidth = context.resources.pxFromDp(3)
         lineWidth2 = context.resources.pxFromDp(4)
+        lineWidth3 = context.resources.pxFromDp(1)
     }
 
     override fun onSaveInstanceState(): Parcelable {

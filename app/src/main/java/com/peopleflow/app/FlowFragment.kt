@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.fragment_flow.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
-
 @Title(R.string.title_flow)
 @Layout(R.layout.fragment_flow)
 class FlowFragment: BaseFragment() {
@@ -43,7 +41,7 @@ class FlowFragment: BaseFragment() {
         data = savedInstanceState?.getParcelable("data")
         if (data != null) {
             setResult(data!!)
-            line.lines = data!!.lines
+            line.data = data!!
         }
         lines.setListener {
             subscribe(repository.removeLine(it).subscribe({
@@ -85,7 +83,7 @@ class FlowFragment: BaseFragment() {
     private fun setResult(data: Data) {
         Log.d(TAG, data.toString())
         if (data.frame_path != null) {
-            line?.lines = data.lines
+            line?.data = data
             lines.setData(data)
             Picasso.with(context).load(data.frame_path).noPlaceholder().noFade().into(object: Target {
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {

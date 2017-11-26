@@ -2,13 +2,13 @@ package com.peopleflow.app.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
-data class Data(val frame_path: String?, val bbox: List<Bbox>?, val lines: List<Line>?, val path: List<Array<Int>>?) : Parcelable {
+data class Data(val frame_path: String?, val bbox: List<Bbox>?, val lines: List<Line>?) : Parcelable {
     constructor(source: Parcel) : this(
             source.readString(),
             source.createTypedArrayList(Bbox.CREATOR),
-            ArrayList<Line>().apply { source.readList(this, Line::class.java.classLoader) },
-            ArrayList<Array<Int>>().apply { source.readList(this, Array<Int>::class.java.classLoader) }
+            ArrayList<Line>().apply { source.readList(this, Line::class.java.classLoader) }
     )
 
     override fun describeContents() = 0
@@ -17,7 +17,6 @@ data class Data(val frame_path: String?, val bbox: List<Bbox>?, val lines: List<
         writeString(frame_path)
         writeTypedList(bbox)
         writeList(lines)
-        writeList(path)
     }
 
     companion object {
@@ -27,5 +26,4 @@ data class Data(val frame_path: String?, val bbox: List<Bbox>?, val lines: List<
             override fun newArray(size: Int): Array<Data?> = arrayOfNulls(size)
         }
     }
-
 }
