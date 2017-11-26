@@ -43,6 +43,7 @@ class FlowFragment: BaseFragment() {
         data = savedInstanceState?.getParcelable("data")
         if (data != null) {
             setResult(data!!)
+            line.lines = data!!.lines
         }
         lines.setListener {
             subscribe(repository.removeLine(it).subscribe({
@@ -84,6 +85,7 @@ class FlowFragment: BaseFragment() {
     private fun setResult(data: Data) {
         Log.d(TAG, data.toString())
         if (data.frame_path != null) {
+            line?.lines = data.lines
             lines.setData(data)
             Picasso.with(context).load(data.frame_path).noPlaceholder().noFade().into(object: Target {
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {

@@ -3,7 +3,7 @@ package com.peopleflow.app.entities
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Data(val frame_path: String?, val bbox: List<Bbox>?, val line: List<Line>?, val path: List<Array<Int>>?) : Parcelable {
+data class Data(val frame_path: String?, val bbox: List<Bbox>?, val lines: List<Line>?, val path: List<Array<Int>>?) : Parcelable {
     constructor(source: Parcel) : this(
             source.readString(),
             source.createTypedArrayList(Bbox.CREATOR),
@@ -16,7 +16,7 @@ data class Data(val frame_path: String?, val bbox: List<Bbox>?, val line: List<L
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(frame_path)
         writeTypedList(bbox)
-        writeList(line)
+        writeList(lines)
         writeList(path)
     }
 

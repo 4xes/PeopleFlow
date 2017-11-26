@@ -2,8 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/normal"
+    android:paddingLeft="@dimen/normal"
+    android:paddingTop="@dimen/small"
+    android:paddingRight="@dimen/normal"
+    android:paddingBottom="@dimen/small"
     android:gravity="center_vertical"
+    android:background="@color/colorAccent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -29,5 +33,5 @@
         android:padding="@dimen/normal"
         style="@style/Kit.Ripple"
         app:srcCompat="@drawable/ic_close_black"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 </LinearLayout>

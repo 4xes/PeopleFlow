@@ -21,11 +21,11 @@ open class LineslView @JvmOverloads constructor(
     }
 
     fun setData(data: Data) {
-        linesAdapter.models = data.line
+        linesAdapter.models = data.lines
     }
 
     init {
-        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = linesAdapter
     }
 

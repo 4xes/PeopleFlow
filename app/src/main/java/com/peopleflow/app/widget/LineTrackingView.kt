@@ -1,7 +1,10 @@
 package com.peopleflow.app.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -19,11 +22,19 @@ class LineTrackingView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private lateinit var linePaint: Paint
+    private lateinit var linePaint2: Paint
     private var lineColor: Int = Color.RED
+    private var lineColor2: Int = Color.BLUE
     private var lineWidth: Float = 1f
+    private var lineWidth2: Float = 1f
     private var line: RectF? = RectF()
 
-    private var lines: List<Line> = emptyList()
+    var lines: List<Line>? = emptyList()
+        set(value) {
+            field = value
+            invalidate()
+        }
+
 
     var listener: ((RectF) -> Unit)? = null
 
@@ -76,6 +87,10 @@ class LineTrackingView @JvmOverloads constructor(
 
         } else if (event.action == MotionEvent.ACTION_UP) {
             if (line != null) {
+                line!!.left = line!!.left / width
+                line!!.right = line!!.right / width
+                line!!.top = line!!.top / height
+                line!!.bottom = line!!.bottom / width
                 listener?.invoke(line!!)
                 line = null
             }
@@ -91,8 +106,8 @@ class LineTrackingView @JvmOverloads constructor(
         super.onDraw(canvas)
 
 
-        lines.forEach {
-            canvas.drawLine(it.point1.x, it.point1.y, it.point2.x, it.point2.y, linePaint)
+        lines?.forEach {
+            canvas.drawLine(it.point1.x * width, it.point1.y * height, it.point2.x * width, it.point2.y * height, linePaint2)
         }
 
         if (line != null) {
@@ -100,19 +115,21 @@ class LineTrackingView @JvmOverloads constructor(
         }
     }
 
-    fun setAddListener(listener: (RectF) -> Unit) {
-        this.listener = listener
-    }
-
     private fun initPaints() {
         linePaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)
         linePaint.style = Paint.Style.FILL
         linePaint.color = lineColor
         linePaint.strokeWidth = lineWidth
+
+        linePaint2 = Paint(Paint.ANTI_ALIAS_FLAG or Paint.LINEAR_TEXT_FLAG)
+        linePaint2.style = Paint.Style.FILL
+        linePaint2.color = lineColor2
+        linePaint2.strokeWidth = lineWidth2
     }
 
     private fun initDimensions(context: Context) {
-        lineWidth = context.resources.pxFromDp(4)
+        lineWidth = context.resources.pxFromDp(3)
+        lineWidth2 = context.resources.pxFromDp(4)
     }
 
     override fun onSaveInstanceState(): Parcelable {
