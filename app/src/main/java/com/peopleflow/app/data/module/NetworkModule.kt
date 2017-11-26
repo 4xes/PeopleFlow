@@ -40,7 +40,8 @@ class NetworkModule {
 
         var builder: OkHttpClient.Builder = OkHttpClient.Builder()
                 .cache(cache)
-                .connectTimeout(40, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor { chain ->
                     val original = chain.request()
 

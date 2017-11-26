@@ -23,7 +23,7 @@ class LineTrackingView @JvmOverloads constructor(
     private var lineWidth: Float = 1f
     private var line: RectF? = RectF()
 
-    private var lines: List<RectF> = emptyList()
+    private var lines: List<Line> = emptyList()
 
     init {
         initAttributes(context, attrs, defStyleAttr, 0)
@@ -74,7 +74,6 @@ class LineTrackingView @JvmOverloads constructor(
 
         } else if (event.action == MotionEvent.ACTION_UP) {
             if (line != null) {
-                lines = lines.plus(line!!)
                 line = null
             }
         } else {
@@ -90,7 +89,7 @@ class LineTrackingView @JvmOverloads constructor(
 
 
         lines.forEach {
-            canvas.drawLine(it.left, it.top, it.right, it.bottom, linePaint)
+            canvas.drawLine(it.point1.x, it.point1.y, it.point2.x, it.point2.y, linePaint)
         }
 
         if (line != null) {
@@ -129,17 +128,19 @@ class LineTrackingView @JvmOverloads constructor(
 
     class SavedState : View.BaseSavedState {
         var line: RectF? = null
-        var lines: List<RectF>? = null
+        var lines: List<Line>? = null
 
         constructor(superState: Parcelable) : super(superState)
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             super.writeToParcel(dest, flags)
             dest.writeParcelable(line, 0)
+            dest.writeList(lines)
         }
 
         private constructor(`in`: Parcel) : super(`in`) {
             line = `in`.readParcelable(RectF::class.java.classLoader)
+            `in`.readList(lines, Line::class.java.classLoader)
         }
 
         companion object {

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class RepositoryImpl  @Inject constructor(private val api: Api) : Repository {
 
-    override fun update() = Observable.interval(1000, TimeUnit.MILLISECONDS).flatMap {
+    override fun update() = Observable.interval(500, TimeUnit.MILLISECONDS).flatMap {
         api.update()
     }.withSchedulers()
 }

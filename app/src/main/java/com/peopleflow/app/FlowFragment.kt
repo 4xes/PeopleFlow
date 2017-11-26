@@ -53,13 +53,12 @@ class FlowFragment: BaseFragment() {
         start()
     }
 
-    fun start() {
-        flow?.data = null
+    private fun start() {
         disposable = repository.update().subscribe({
             setResult(it)
         }, {
             it.printStackTrace()
-            subscribe(Observable.timer(300, TimeUnit.MILLISECONDS).subscribe {
+            subscribe(Observable.timer(1000, TimeUnit.MILLISECONDS).subscribe {
                 start()
             })
         })
@@ -70,7 +69,7 @@ class FlowFragment: BaseFragment() {
         outState?.putParcelable("data", data)
     }
 
-    fun setResult(data: Data) {
+    private fun setResult(data: Data) {
         Log.d(TAG, data.toString())
         if (data.frame_path != null) {
             Picasso.with(context).load(data.frame_path).noPlaceholder().noFade().into(object: Target {
@@ -88,6 +87,7 @@ class FlowFragment: BaseFragment() {
                             visibility = View.GONE
                         }
                     }
+                    line?.visibility = View.VISIBLE
                     setUpdateImage(bitmap)
                     flow?.data = data
                 }

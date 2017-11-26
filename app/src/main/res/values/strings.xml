@@ -3,5 +3,5 @@
     <string name="permission">Permission is denied</string>
     <string name="take_a_photo">Shot</string>
     <string name="waiting_connection">Waiting for connection…</string>
-    <string name="title_flow">People flow</string>
+    <string name="title_flow">@string/app_name</string>
 </resources>
